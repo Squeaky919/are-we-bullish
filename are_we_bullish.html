@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title></title>
+	</head>
+	<body>
+		<h1>Are we bullish?</h1>
+		<input id="button" type="submit" value="Find Out"></input>
+		<br><br>
+		<div id="result"></div>
+		<div id="current_price"></div>
+		<div id="price_change"></div>
+		<div class="something"></div>
+		<div class="something"></div>
+		<div class="something"></div>
+		<script>
+			document.getElementById("button").addEventListener("click", areWeBullish);
+            function areWeBullish(){
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("GET","https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin",true);
+                            xhr.onload = function(){
+                                            if(xhr.status == 200){
+                                                            var result = JSON.parse(xhr.responseText);
+                                                            var round = Math.round(result[0].price_change_24h);
+                                                            var round_abs = Math.abs(result[0].price_change_24h);
+                                                            document.getElementById("current_price").innerHTML = "$" + result[0].current_price;
+                                                            if(result[0].price_change_24h > 0){
+                                                                            document.getElementById("result").innerHTML = "We are bullish!";
+                                                            document.getElementById("price_change").innerHTML = "(+$" + round_abs + ")";
+                                                                        } else {
+                                                                                        document.getElementById("result").innerHTML = "We are bearish";
+                                                            document.getElementById("price_change").innerHTML = "($" + round + ")";
+                                                                                    }
+                                                        }
+                                        }
+                            xhr.send();
+                        }
+
+		</script>
+	</body>
+</html>
+
